@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 
 import api from "../services/api";
 import DynamicForm from "../components/DynamicForm";
+import RecordsTable from "../components/RecordsTable";
 
 function Dashboard() {
 
   const [templates, setTemplates] = useState([]);
+  const [records, setRecords] = useState([]);
 
   useEffect(() => {
     loadTemplates();
+    loadRecords();
   }, []);
 
   const loadTemplates = async () => {
@@ -23,33 +26,49 @@ function Dashboard() {
     }
   };
 
+    const loadRecords = async () => {
+
+    try {
+
+      const response = await api.get("records/");
+      setRecords(response.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <div style={{ padding: "40px" }}>
+    <div className="min-h-screen bg-gray-100 p-6">
 
-      <h1>Dashboard INVIMA</h1>
+      <div className="max-w-5xl mx-auto">
 
-      <hr />
+        <h1 className="text-4xl font-bold mb-6 text-gray-800">
+          Dashboard INVIMA
+        </h1>
 
-      {
-        templates.map((template) => (
+        <div className="grid gap-6">
 
-          <div
-            key={template.id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "20px",
-              marginBottom: "20px"
-            }}
-          >
+          {
+            templates.map((template) => (
 
-            <DynamicForm
-              template={template}
-              companyId={1}
-            />
+              <div
+                key={template.id}
+                className="bg-white rounded-2xl shadow-md p-6"
+              >
 
-          </div>
-        ))
-      }
+                <DynamicForm
+                  template={template}
+                  companyId={1}
+                />
+
+              </div>
+            ))
+          }
+
+        </div>
+          <RecordsTable records={records} />
+      </div>
 
     </div>
   );

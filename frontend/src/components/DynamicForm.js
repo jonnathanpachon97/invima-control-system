@@ -25,9 +25,8 @@ function DynamicForm({ template, companyId }) {
 
       alert("Registro guardado");
 
-      console.log(formData);
-
     } catch (error) {
+
       console.error(error);
       alert("Error guardando registro");
     }
@@ -36,36 +35,59 @@ function DynamicForm({ template, companyId }) {
   return (
     <form onSubmit={handleSubmit}>
 
-      <h2>{template.name}</h2>
+      <h2 className="text-2xl font-semibold mb-6 text-gray-700">
+        {template.name}
+      </h2>
 
-      {
-        template.schema.map((field, index) => (
+      <div className="grid md:grid-cols-2 gap-4">
 
-          <div
-            key={index}
-            style={{ marginBottom: "15px" }}
-          >
+        {
+          template.schema.map((field, index) => (
 
-            <label>{field.name}</label>
+            <div key={index}>
 
-            <br />
+              <label className="block mb-2 text-sm font-medium text-gray-700">
+                {field.name}
+              </label>
 
-            <input
-              type={field.type}
-              onChange={(e) =>
-                handleChange(field.name, e.target.value)
-              }
-              style={{
-                padding: "10px",
-                width: "300px"
-              }}
-            />
+              <input
+                type={field.type}
+                onChange={(e) =>
+                  handleChange(field.name, e.target.value)
+                }
+                className="
+                  w-full
+                  border
+                  border-gray-300
+                  rounded-xl
+                  px-4
+                  py-3
+                  focus:outline-none
+                  focus:ring-2
+                  focus:ring-blue-500
+                "
+              />
 
-          </div>
-        ))
-      }
+            </div>
+          ))
+        }
 
-      <button type="submit">
+      </div>
+
+      <button
+        type="submit"
+        className="
+          mt-6
+          bg-blue-600
+          hover:bg-blue-700
+          text-white
+          px-6
+          py-3
+          rounded-xl
+          font-medium
+          transition
+        "
+      >
         Guardar Registro
       </button>
 
