@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
+
 import api from "../services/api";
+import DynamicForm from "../components/DynamicForm";
 
 function Dashboard() {
 
-  const [companies, setCompanies] = useState([]);
+  const [templates, setTemplates] = useState([]);
 
   useEffect(() => {
-    loadCompanies();
+    loadTemplates();
   }, []);
 
-  const loadCompanies = async () => {
+  const loadTemplates = async () => {
 
     try {
 
-      const response = await api.get("companies/");
-
-      setCompanies(response.data);
-
-      console.log(response.data);
+      const response = await api.get("form-templates/");
+      setTemplates(response.data);
 
     } catch (error) {
       console.error(error);
@@ -29,20 +28,25 @@ function Dashboard() {
 
       <h1>Dashboard INVIMA</h1>
 
-      <h2>Empresas</h2>
+      <hr />
 
       {
-        companies.map((company) => (
+        templates.map((template) => (
+
           <div
-            key={company.id}
+            key={template.id}
             style={{
               border: "1px solid #ccc",
-              padding: "10px",
-              marginBottom: "10px"
+              padding: "20px",
+              marginBottom: "20px"
             }}
           >
-            <h3>{company.name}</h3>
-            <p>NIT: {company.nit}</p>
+
+            <DynamicForm
+              template={template}
+              companyId={1}
+            />
+
           </div>
         ))
       }
