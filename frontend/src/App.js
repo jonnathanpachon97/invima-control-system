@@ -6,6 +6,7 @@ import {
 
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import CreateTemplate from "./pages/CreateTemplate";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
@@ -22,6 +23,14 @@ function App() {
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
+          }
+        />
+
+        <Route path="/create-template" 
+        element={
+          <ProtectedRoute>
+          <CreateTemplate />
+          </ProtectedRoute>
           }
         />
 
