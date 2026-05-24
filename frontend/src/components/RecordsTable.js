@@ -23,6 +23,10 @@ function RecordsTable({ records }) {
                 Datos
               </th>
 
+              <th className="text-left p-4">
+                PDF
+              </th>
+
             </tr>
 
           </thead>
@@ -38,7 +42,7 @@ function RecordsTable({ records }) {
                 >
 
                   <td className="p-4">
-                    {record.created_at}
+                    {new Date(record.created_at).toLocaleString()}
                   </td>
 
                   <td className="p-4">
@@ -55,6 +59,27 @@ function RecordsTable({ records }) {
                     }
 
                   </td>
+
+                  <td className="p-4">
+
+                    <a
+                        href={`http://127.0.0.1:8000/api/records/${record.id}/pdf/`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="
+                        bg-blue-600
+                        hover:bg-blue-700
+                        text-white
+                        px-4
+                        py-2
+                        rounded-lg
+                        transition
+                        "
+                    >
+                        Descargar PDF
+                    </a>
+
+                    </td>
 
                 </tr>
               ))
