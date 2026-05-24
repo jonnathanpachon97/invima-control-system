@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import api from "../services/api";
+import Navbar from "../components/Navbar";
 
 function CreateTemplate() {
 
@@ -73,6 +74,10 @@ function CreateTemplate() {
   };
 
   return (
+      <>
+
+    <Navbar />
+
     <div className="min-h-screen bg-gray-100 p-6">
 
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-md">
@@ -230,7 +235,9 @@ function CreateTemplate() {
       </div>
 
     </div>
-  );
+
+  </>
+);
 }
 
 export default CreateTemplate;

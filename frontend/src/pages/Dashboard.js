@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import DynamicForm from "../components/DynamicForm";
 import RecordsTable from "../components/RecordsTable";
+import Navbar from "../components/Navbar";
 
 function Dashboard() {
 
@@ -38,7 +39,12 @@ function Dashboard() {
     }
   };
 
-  return (
+return (
+
+  <>
+
+    <Navbar />
+
     <div className="min-h-screen bg-gray-100 p-6">
 
       <div className="max-w-5xl mx-auto">
@@ -68,11 +74,15 @@ function Dashboard() {
           }
 
         </div>
-          <RecordsTable records={records} />
+
+        <RecordsTable records={records} />
+
       </div>
 
     </div>
-  );
+
+  </>
+);
 }
 
 export default Dashboard;
