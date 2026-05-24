@@ -60,6 +60,7 @@ function Dashboard() {
                 <DynamicForm
                   template={template}
                   companyId={1}
+                  onRecordCreated={loadRecords}
                 />
 
               </div>

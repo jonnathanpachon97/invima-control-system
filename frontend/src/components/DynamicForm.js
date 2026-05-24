@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 
-function DynamicForm({ template, companyId }) {
+function DynamicForm({ template, companyId, onRecordCreated }) {
 
   const [formData, setFormData] = useState({});
 
@@ -24,6 +24,10 @@ function DynamicForm({ template, companyId }) {
       });
 
       alert("Registro guardado");
+
+      onRecordCreated();
+      
+      setFormData({});
 
     } catch (error) {
 
@@ -52,6 +56,7 @@ function DynamicForm({ template, companyId }) {
 
               <input
                 type={field.type}
+                value={formData[field.name] || ""}
                 onChange={(e) =>
                   handleChange(field.name, e.target.value)
                 }
