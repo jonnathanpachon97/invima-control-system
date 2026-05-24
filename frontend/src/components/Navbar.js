@@ -56,6 +56,16 @@ function Navbar() {
             Crear Formato
           </Link>
 
+          <Link
+            to="/templates"
+            className="
+                hover:text-blue-400
+                transition
+            "
+            >
+            Formatos
+          </Link>
+
           <button
             onClick={logout}
             className="

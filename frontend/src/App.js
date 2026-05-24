@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import CreateTemplate from "./pages/CreateTemplate";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Templates from "./pages/Templates";
 
 function App() {
   return (
@@ -31,6 +32,15 @@ function App() {
           <ProtectedRoute>
           <CreateTemplate />
           </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/templates"
+          element={
+            <ProtectedRoute>
+              <Templates />
+            </ProtectedRoute>
           }
         />
 
