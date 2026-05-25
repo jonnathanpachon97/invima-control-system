@@ -11,8 +11,16 @@ from .views import (
 router = DefaultRouter()
 
 router.register(r'companies', CompanyViewSet)
-router.register(r'form-templates', FormTemplateViewSet)
-router.register(r'records', RecordViewSet)
+router.register(
+    r'form-templates',
+    FormTemplateViewSet,
+    basename='form-templates'
+)
+router.register(
+    r'records',
+    RecordViewSet,
+    basename='records'
+)
 
 urlpatterns = [
 

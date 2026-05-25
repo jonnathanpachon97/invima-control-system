@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 
-function DynamicForm({ template, companyId, onRecordCreated }) {
+function DynamicForm({ template, onRecordCreated }) {
 
   const [formData, setFormData] = useState({});
 
@@ -19,7 +19,6 @@ function DynamicForm({ template, companyId, onRecordCreated }) {
 
       await api.post("records/", {
         data: formData,
-        company: companyId,
         template: template.id
       });
 

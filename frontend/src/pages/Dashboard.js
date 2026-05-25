@@ -65,7 +65,6 @@ return (
 
                 <DynamicForm
                   template={template}
-                  companyId={1}
                   onRecordCreated={loadRecords}
                 />
 

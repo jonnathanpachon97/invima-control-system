@@ -1,4 +1,41 @@
+import api from "../services/api";
+
 function RecordsTable({ records }) {
+
+  const downloadPDF = async (id) => {
+
+  try {
+
+    const response = await api.get(
+      `records/${id}/pdf/`,
+      {
+        responseType: "blob"
+      }
+    );
+
+    const url = window.URL.createObjectURL(
+      new Blob([response.data])
+    );
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.setAttribute(
+      "download",
+      `record_${id}.pdf`
+    );
+
+    document.body.appendChild(link);
+
+    link.click();
+
+  } catch (error) {
+
+    console.error(error.response);
+    alert(error.response?.data?.detail || "Error descargando PDF");
+  }
+};
 
   return (
     <div className="mt-10">
@@ -11,25 +48,29 @@ function RecordsTable({ records }) {
 
         <table className="w-full bg-white rounded-2xl shadow-md">
 
-          <thead className="bg-gray-100">
+        <thead className="bg-gray-100">
 
-            <tr>
+          <tr>
 
-              <th className="text-left p-4">
-                Fecha
-              </th>
+            <th className="text-left p-4">
+              Fecha
+            </th>
 
-              <th className="text-left p-4">
-                Datos
-              </th>
+            <th className="text-left p-4">
+              ID
+            </th>
 
-              <th className="text-left p-4">
-                PDF
-              </th>
+            <th className="text-left p-4">
+              Datos
+            </th>
 
-            </tr>
+            <th className="text-left p-4">
+              PDF
+            </th>
 
-          </thead>
+          </tr>
+
+        </thead>
 
           <tbody>
 
@@ -43,6 +84,10 @@ function RecordsTable({ records }) {
 
                   <td className="p-4">
                     {new Date(record.created_at).toLocaleString()}
+                  </td>
+
+                  <td className="p-4">
+                    {record.id}
                   </td>
 
                   <td className="p-4">
@@ -62,11 +107,9 @@ function RecordsTable({ records }) {
 
                   <td className="p-4">
 
-                    <a
-                        href={`http://127.0.0.1:8000/api/records/${record.id}/pdf/`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="
+                    <button
+                      onClick={() => downloadPDF(record.id)}
+                      className="
                         bg-blue-600
                         hover:bg-blue-700
                         text-white
@@ -74,10 +117,10 @@ function RecordsTable({ records }) {
                         py-2
                         rounded-lg
                         transition
-                        "
+                      "
                     >
-                        Descargar PDF
-                    </a>
+                      Descargar PDF
+                    </button>
 
                     </td>
 

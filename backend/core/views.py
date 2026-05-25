@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import FileResponse
 from .pdf_service import generate_record_pdf
 from rest_framework import viewsets
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from .models import Company, FormTemplate, Record
 from .serializers import (
     CompanySerializer,
@@ -16,18 +18,46 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class FormTemplateViewSet(viewsets.ModelViewSet):
-    queryset = FormTemplate.objects.all()
+
     serializer_class = FormTemplateSerializer
+
+    def get_queryset(self):
+
+        company = Company.objects.get(
+            user=self.request.user
+        )
+
+        return FormTemplate.objects.filter(
+            company=company
+        )
 
 
 class RecordViewSet(viewsets.ModelViewSet):
-    queryset = Record.objects.all()
+
     serializer_class = RecordSerializer
 
+    def get_queryset(self):
 
+        company = Company.objects.get(
+            user=self.request.user
+        )
+
+        return Record.objects.filter(
+            company=company
+        )
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def download_record_pdf(request, pk):
 
-    record = Record.objects.get(id=pk)
+    company = Company.objects.get(
+        user=request.user
+    )
+
+    record = Record.objects.get(
+        id=pk,
+        company=company
+    )
 
     pdf_buffer = generate_record_pdf(record)
 
