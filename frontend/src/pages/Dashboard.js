@@ -83,6 +83,48 @@ return (
           Dashboard INVIMA
         </h1>
 
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+
+        <div
+          className="
+            bg-white
+            rounded-2xl
+            shadow-md
+            p-6
+          "
+        >
+
+          <h2 className="text-gray-500 text-lg">
+            Formatos Activos
+          </h2>
+
+          <p className="text-4xl font-bold mt-2 text-blue-600">
+            {templates.length}
+          </p>
+
+        </div>
+
+        <div
+          className="
+            bg-white
+            rounded-2xl
+            shadow-md
+            p-6
+          "
+        >
+
+          <h2 className="text-gray-500 text-lg">
+            Registros Totales
+          </h2>
+
+          <p className="text-4xl font-bold mt-2 text-green-600">
+            {records.length}
+          </p>
+
+        </div>
+
+      </div>
+
         <div className="grid gap-6">
 
           {
