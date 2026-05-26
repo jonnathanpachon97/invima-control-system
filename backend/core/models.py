@@ -14,6 +14,12 @@ class Company(models.Model):
 
     nit = models.CharField(max_length=50)
 
+    logo = models.ImageField(
+        upload_to="company_logos/",
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.name
 
