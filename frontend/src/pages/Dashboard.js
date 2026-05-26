@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { Link } from "react-router-dom";
+
 import api from "../services/api";
 import DynamicForm from "../components/DynamicForm";
 import RecordsTable from "../components/RecordsTable";
@@ -39,6 +41,34 @@ function Dashboard() {
     }
   };
 
+    const deleteTemplate = async (id) => {
+
+    const confirmDelete = window.confirm(
+      "¿Eliminar este formato?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+
+      await api.delete(
+        `form-templates/${id}/`
+      );
+
+      alert("Formato eliminado");
+
+      loadTemplates();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert("Error eliminando formato");
+    }
+  };
+
 return (
 
   <>
@@ -58,10 +88,44 @@ return (
           {
             templates.map((template) => (
 
-              <div
-                key={template.id}
-                className="bg-white rounded-2xl shadow-md p-6"
-              >
+                  <div
+                    key={template.id}
+                    className="bg-white rounded-2xl shadow-md p-6"
+                  >
+
+                  <div className="flex justify-end gap-3 mb-4">
+
+                    <Link
+                      to={`/templates/${template.id}/edit`}
+                      className="
+                        bg-yellow-500
+                        hover:bg-yellow-600
+                        text-white
+                        px-4
+                        py-2
+                        rounded-xl
+                        transition
+                      "
+                    >
+                      Editar
+                    </Link>
+
+                    <button
+                      onClick={() => deleteTemplate(template.id)}
+                      className="
+                        bg-red-500
+                        hover:bg-red-600
+                        text-white
+                        px-4
+                        py-2
+                        rounded-xl
+                        transition
+                      "
+                    >
+                      Desactivar
+                    </button>
+
+                  </div>
 
                 <DynamicForm
                   template={template}

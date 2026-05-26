@@ -37,6 +37,8 @@ class FormTemplate(models.Model):
 
     schema = models.JSONField(default=list)
 
+    is_active = models.BooleanField(default=True)
+
     def __str__(self):
         return self.name
 

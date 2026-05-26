@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import CreateTemplate from "./pages/CreateTemplate";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Templates from "./pages/Templates";
+import EditTemplate from "./pages/EditTemplate";
 
 function App() {
   return (
@@ -42,6 +43,11 @@ function App() {
               <Templates />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/templates/:id/edit"
+          element={<EditTemplate />}
         />
 
       </Routes>

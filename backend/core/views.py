@@ -4,6 +4,7 @@ from .pdf_service import generate_record_pdf
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from .models import Company, FormTemplate, Record
 from .serializers import (
     CompanySerializer,
@@ -28,8 +29,21 @@ class FormTemplateViewSet(viewsets.ModelViewSet):
         )
 
         return FormTemplate.objects.filter(
-            company=company
+            company=company,
+            is_active=True
         )
+
+    def destroy(self, request, *args, **kwargs):
+
+        template = self.get_object()
+
+        template.is_active = False
+
+        template.save()
+
+        return Response({
+            "message": "Formato desactivado"
+        })
 
 
 class RecordViewSet(viewsets.ModelViewSet):
