@@ -6,6 +6,7 @@ import api from "../services/api";
 import DynamicForm from "../components/DynamicForm";
 import RecordsTable from "../components/RecordsTable";
 import Navbar from "../components/Navbar";
+import DashboardCharts from "../components/DashboardCharts";
 
 function Dashboard() {
 
@@ -124,6 +125,8 @@ return (
         </div>
 
       </div>
+
+        <DashboardCharts records={records} />
 
         <div className="grid gap-6">
 
