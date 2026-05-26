@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import FileResponse
 from .pdf_service import generate_record_pdf
+from .excel_service import generate_records_excel
 from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -79,4 +80,26 @@ def download_record_pdf(request, pk):
         pdf_buffer,
         as_attachment=True,
         filename=f"record_{record.id}.pdf"
+    )
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def download_records_excel(request):
+
+    company = Company.objects.get(
+        user=request.user
+    )
+
+    records = Record.objects.filter(
+        company=company
+    )
+
+    excel_buffer = generate_records_excel(
+        records
+    )
+
+    return FileResponse(
+        excel_buffer,
+        as_attachment=True,
+        filename="records.xlsx"
     )

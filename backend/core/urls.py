@@ -5,7 +5,8 @@ from .views import (
     CompanyViewSet,
     FormTemplateViewSet,
     RecordViewSet,
-    download_record_pdf
+    download_record_pdf,
+    download_records_excel
 )
 
 router = DefaultRouter()
@@ -29,5 +30,10 @@ urlpatterns = [
     path(
         "records/<int:pk>/pdf/",
         download_record_pdf
+    ),
+
+    path(
+        "records/export/excel/",
+        download_records_excel
     ),
 ]

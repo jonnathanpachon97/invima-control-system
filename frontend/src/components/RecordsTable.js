@@ -19,6 +19,42 @@ const filteredRecords = records.filter((record) => {
   );
 });
 
+  const downloadExcel = async () => {
+
+  try {
+
+    const response = await api.get(
+      "records/export/excel/",
+      {
+        responseType: "blob"
+      }
+    );
+
+    const url = window.URL.createObjectURL(
+      new Blob([response.data])
+    );
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.setAttribute(
+      "download",
+      "records.xlsx"
+    );
+
+    document.body.appendChild(link);
+
+    link.click();
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Error descargando Excel");
+  }
+};
+
   const downloadPDF = async (id) => {
 
   try {
@@ -57,9 +93,28 @@ const filteredRecords = records.filter((record) => {
   return (
     <div className="mt-10">
 
-      <h2 className="text-2xl font-bold mb-4">
+      <div className="flex justify-between items-center mb-4">
+
+      <h2 className="text-2xl font-bold">
         Registros
       </h2>
+
+      <button
+        onClick={downloadExcel}
+        className="
+          bg-green-600
+          hover:bg-green-700
+          text-white
+          px-4
+          py-2
+          rounded-xl
+          transition
+        "
+      >
+        Exportar Excel
+      </button>
+
+    </div>
 
       <div className="mb-4">
 
