@@ -1,6 +1,23 @@
+import { useState } from "react";
+
 import api from "../services/api";
 
 function RecordsTable({ records }) {
+
+  const [search, setSearch] = useState("");
+
+const filteredRecords = records.filter((record) => {
+
+  const values = `
+    ${Object.values(record.data).join(" ")}
+    ${new Date(record.created_at).toLocaleDateString()}
+    ${record.id}
+  `.toLowerCase();
+
+  return values.includes(
+    search.toLowerCase()
+  );
+});
 
   const downloadPDF = async (id) => {
 
@@ -44,6 +61,32 @@ function RecordsTable({ records }) {
         Registros
       </h2>
 
+      <div className="mb-4">
+
+      <input
+        type="text"
+        placeholder="Buscar registros..."
+        value={search}
+        onChange={(e) =>
+          setSearch(e.target.value)
+        }
+        className="
+          w-full
+          md:w-96
+          border
+          border-gray-300
+          rounded-xl
+          px-4
+          py-3
+          focus:outline-none
+          focus:ring-2
+          focus:ring-blue-500
+          bg-white
+        "
+      />
+
+    </div>
+
       <div className="overflow-x-auto">
 
         <table className="w-full bg-white rounded-2xl shadow-md">
@@ -75,7 +118,7 @@ function RecordsTable({ records }) {
           <tbody>
 
             {
-              records.map((record) => (
+              filteredRecords.map((record) => (
 
                 <tr
                   key={record.id}
