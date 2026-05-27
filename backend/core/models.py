@@ -37,6 +37,8 @@ class FormTemplate(models.Model):
 
     schema = models.JSONField(default=list)
 
+    requires_image = models.BooleanField(default=False)
+
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

@@ -106,6 +106,9 @@ function DynamicForm({ template, onRecordCreated }) {
 
       </div>
 
+  {
+    template.requires_image && (
+
       <div className="mb-4">
 
         <label className="block mb-2 font-semibold">
@@ -128,6 +131,9 @@ function DynamicForm({ template, onRecordCreated }) {
         />
 
       </div>
+
+    )
+  }
 
       <button
         type="submit"

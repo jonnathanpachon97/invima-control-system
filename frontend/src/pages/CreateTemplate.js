@@ -6,7 +6,10 @@ import Navbar from "../components/Navbar";
 function CreateTemplate() {
 
   const [name, setName] = useState("");
+
   const [description, setDescription] = useState("");
+
+  const [requiresImage, setRequiresImage] = useState(false);
 
   const [fields, setFields] = useState([
     {
@@ -50,7 +53,8 @@ function CreateTemplate() {
         {
           name,
           description,
-          schema: fields
+          schema: fields,
+          requires_image: requiresImage
         }
       );
 
@@ -58,6 +62,7 @@ function CreateTemplate() {
 
       setName("");
       setDescription("");
+      setRequiresImage(false);
 
       setFields([
         {
@@ -130,6 +135,27 @@ function CreateTemplate() {
                 py-3
               "
             />
+
+          </div>
+
+          <div className="mb-8">
+
+            <label className="flex items-center gap-3">
+
+              <input
+                type="checkbox"
+                checked={requiresImage}
+                onChange={(e) =>
+                  setRequiresImage(e.target.checked)
+                }
+                className="w-5 h-5"
+              />
+
+              <span className="text-gray-700 font-medium">
+                Requiere evidencia fotográfica
+              </span>
+
+            </label>
 
           </div>
 
