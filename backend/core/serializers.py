@@ -30,9 +30,23 @@ class FormTemplateSerializer(serializers.ModelSerializer):
 
 class RecordSerializer(serializers.ModelSerializer):
 
+    image = serializers.ImageField(
+        use_url=True,
+        required=False
+    )
+
     class Meta:
         model = Record
-        fields = "__all__"
+
+        fields = [
+            "id",
+            "company",
+            "template",
+            "created_at",
+            "data",
+            "image"
+        ]
+
         read_only_fields = ["company"]
 
     def create(self, validated_data):

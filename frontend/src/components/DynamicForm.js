@@ -5,6 +5,8 @@ function DynamicForm({ template, onRecordCreated }) {
 
   const [formData, setFormData] = useState({});
 
+  const [image, setImage] = useState(null);
+
   const handleChange = (name, value) => {
     setFormData({
       ...formData,
@@ -17,10 +19,36 @@ function DynamicForm({ template, onRecordCreated }) {
 
     try {
 
-      await api.post("records/", {
-        data: formData,
-        template: template.id
-      });
+      const payload = new FormData();
+
+      payload.append(
+        "template",
+        template.id
+      );
+
+      payload.append(
+        "data",
+        JSON.stringify(formData)
+      );
+
+      if (image) {
+
+        payload.append(
+          "image",
+          image
+        );
+      }
+
+      await api.post(
+        "records/",
+        payload,
+        {
+          headers: {
+            "Content-Type":
+              "multipart/form-data"
+          }
+        }
+      );
 
       alert("Registro guardado");
 
@@ -75,6 +103,29 @@ function DynamicForm({ template, onRecordCreated }) {
             </div>
           ))
         }
+
+      </div>
+
+      <div className="mb-4">
+
+        <label className="block mb-2 font-semibold">
+          Evidencia Fotográfica
+        </label>
+
+        <input
+          type="file"
+          onChange={(e) =>
+            setImage(e.target.files[0])
+          }
+          className="
+            w-full
+            border
+            border-gray-300
+            rounded-xl
+            p-3
+            bg-white
+          "
+        />
 
       </div>
 

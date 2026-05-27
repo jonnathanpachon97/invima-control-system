@@ -15,6 +15,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 from reportlab.lib.pagesizes import letter
 
+from reportlab.lib.utils import ImageReader
+
 
 def generate_record_pdf(record):
 
@@ -167,6 +169,36 @@ def generate_record_pdf(record):
     ]))
 
     elements.append(table)
+
+    # Evidencia fotográfica
+    if record.image:
+
+        elements.append(
+            Spacer(1, 25)
+        )
+
+        evidencia_title = Paragraph(
+            "<b>Evidencia Fotográfica</b>",
+            styles["Heading2"]
+        )
+
+        elements.append(evidencia_title)
+
+        elements.append(
+            Spacer(1, 15)
+        )
+
+        evidencia = Image(
+            record.image.path,
+            width=250,
+            height=250
+        )
+
+        elements.append(evidencia)
+
+        elements.append(
+            Spacer(1, 30)
+        )
 
     elements.append(Spacer(1, 50))
 

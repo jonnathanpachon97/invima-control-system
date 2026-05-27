@@ -44,13 +44,28 @@ class FormTemplate(models.Model):
 
 
 class Record(models.Model):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    template = models.ForeignKey(FormTemplate, on_delete=models.CASCADE)
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE
+    )
+
+    template = models.ForeignKey(
+        FormTemplate,
+        on_delete=models.CASCADE
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
 
     data = models.JSONField()
 
+    image = models.ImageField(
+        upload_to="records/",
+        null=True,
+        blank=True
+    )
+
     def __str__(self):
         return f"{self.template.name} - {self.created_at}"
-    

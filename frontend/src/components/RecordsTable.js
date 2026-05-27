@@ -163,6 +163,10 @@ const filteredRecords = records.filter((record) => {
             </th>
 
             <th className="text-left p-4">
+              Evidencia
+            </th>
+
+            <th className="text-left p-4">
               PDF
             </th>
 
@@ -173,7 +177,11 @@ const filteredRecords = records.filter((record) => {
           <tbody>
 
             {
-              filteredRecords.map((record) => (
+              filteredRecords.map((record) => {
+
+              console.log(record.image);
+
+              return (
 
                 <tr
                   key={record.id}
@@ -205,6 +213,34 @@ const filteredRecords = records.filter((record) => {
 
                   <td className="p-4">
 
+                    {
+                      record.image ? (
+
+                        <img
+                          src={record.image}
+                          alt="evidencia"
+                          className="
+                            w-24
+                            h-24
+                            object-cover
+                            rounded-xl
+                            border
+                          "
+                        />
+
+                      ) : (
+
+                        <span className="text-gray-400">
+                          Sin imagen
+                        </span>
+
+                      )
+                    }
+
+                  </td>
+
+                  <td className="p-4">
+
                     <button
                       onClick={() => downloadPDF(record.id)}
                       className="
@@ -223,9 +259,9 @@ const filteredRecords = records.filter((record) => {
                     </td>
 
                 </tr>
-              ))
-            }
-
+              );
+            })
+          }
           </tbody>
 
         </table>

@@ -12,6 +12,10 @@ from .serializers import (
     FormTemplateSerializer,
     RecordSerializer
 )
+from rest_framework.parsers import (
+    MultiPartParser,
+    FormParser
+)
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -48,6 +52,11 @@ class FormTemplateViewSet(viewsets.ModelViewSet):
 
 
 class RecordViewSet(viewsets.ModelViewSet):
+
+    parser_classes = [
+        MultiPartParser,
+        FormParser
+    ]
 
     serializer_class = RecordSerializer
 
