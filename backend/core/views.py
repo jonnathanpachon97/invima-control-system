@@ -14,16 +14,22 @@ from .serializers import (
 )
 from rest_framework.parsers import (
     MultiPartParser,
-    FormParser
+    FormParser,
+    JSONParser
 )
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
+
+    permission_classes = [IsAuthenticated]
+
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
 
 
 class FormTemplateViewSet(viewsets.ModelViewSet):
+
+    permission_classes = [IsAuthenticated]
 
     serializer_class = FormTemplateSerializer
 
@@ -53,9 +59,12 @@ class FormTemplateViewSet(viewsets.ModelViewSet):
 
 class RecordViewSet(viewsets.ModelViewSet):
 
+    permission_classes = [IsAuthenticated]
+
     parser_classes = [
         MultiPartParser,
-        FormParser
+        FormParser,
+        JSONParser
     ]
 
     serializer_class = RecordSerializer

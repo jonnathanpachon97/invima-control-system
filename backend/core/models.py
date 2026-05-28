@@ -47,6 +47,12 @@ class FormTemplate(models.Model):
 
 class Record(models.Model):
 
+    STATUS_CHOICES = [
+        ("pendiente", "Pendiente"),
+        ("aprobado", "Aprobado"),
+        ("rechazado", "Rechazado"),
+    ]
+
     company = models.ForeignKey(
         Company,
         on_delete=models.CASCADE
@@ -67,6 +73,12 @@ class Record(models.Model):
         upload_to="records/",
         null=True,
         blank=True
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pendiente"
     )
 
     def __str__(self):

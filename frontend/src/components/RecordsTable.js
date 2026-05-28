@@ -90,6 +90,30 @@ const filteredRecords = records.filter((record) => {
   }
 };
 
+const updateStatus = async (
+  id,
+  status
+) => {
+
+  try {
+
+    await api.patch(
+      `records/${id}/`,
+      {
+        status
+      }
+    );
+
+    window.location.reload();
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Error actualizando estado");
+  }
+};
+
   return (
     <div className="mt-10">
 
@@ -163,6 +187,10 @@ const filteredRecords = records.filter((record) => {
             </th>
 
             <th className="text-left p-4">
+              Estado
+            </th>
+
+            <th className="text-left p-4">
               Evidencia
             </th>
 
@@ -208,6 +236,82 @@ const filteredRecords = records.filter((record) => {
                         )
                       )
                     }
+
+                  </td>
+
+                  <td className="p-4">
+
+                    <span
+                      className={`
+                        px-3
+                        py-1
+                        rounded-full
+                        text-sm
+                        font-semibold
+
+                        ${
+                          record.status === "aprobado"
+                            ? "bg-green-100 text-green-700"
+                            : record.status === "rechazado"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }
+                      `}
+                    >
+
+                      {
+                        record.status === "pendiente"
+                          ? "Pendiente"
+                          : record.status === "aprobado"
+                          ? "Aprobado"
+                          : "Rechazado"
+                      }
+
+                    </span>
+
+                    {
+                      record.status === "pendiente" && (
+
+                      <div className="flex gap-2 mt-2 flex-wrap">
+
+                        <button
+                          onClick={() =>
+                            updateStatus(record.id, "aprobado")
+                          }
+                          className="
+                            bg-green-600
+                            hover:bg-green-700
+                            text-white
+                            px-2
+                            py-1
+                            rounded-lg
+                            text-xs
+                          "
+                        >
+                          Aprobar
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            updateStatus(record.id, "rechazado")
+                          }
+                          className="
+                            bg-red-600
+                            hover:bg-red-700
+                            text-white
+                            px-2
+                            py-1
+                            rounded-lg
+                            text-xs
+                          "
+                        >
+                          Rechazar
+                        </button>
+
+                      </div>
+
+                    )
+                  }
 
                   </td>
 
