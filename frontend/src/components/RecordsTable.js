@@ -6,6 +6,8 @@ function RecordsTable({ records }) {
 
   const [search, setSearch] = useState("");
 
+  const [observations, setObservations] = useState({});
+
 const filteredRecords = records.filter((record) => {
 
   const values = `
@@ -100,7 +102,9 @@ const updateStatus = async (
     await api.patch(
       `records/${id}/`,
       {
-        status
+        status,
+        observation:
+          observations[id] || ""
       }
     );
 
@@ -268,6 +272,54 @@ const updateStatus = async (
                       }
 
                     </span>
+
+                    {
+                      record.status === "pendiente" ? (
+
+                        <textarea
+                          placeholder="Observación..."
+                          value={observations[record.id] || ""}
+                          onChange={(e) =>
+                            setObservations({
+                              ...observations,
+                              [record.id]: e.target.value
+                            })
+                          }
+                          className="
+                            w-full
+                            border
+                            rounded-lg
+                            p-2
+                            mt-2
+                            text-sm
+                          "
+                        />
+
+                      ) : (
+
+                        record.observation && (
+
+                          <div
+                            className="
+                              mt-2
+                              p-3
+                              bg-gray-100
+                              rounded-lg
+                              text-sm
+                            "
+                          >
+                            <strong>Observación:</strong>
+
+                            <div className="mt-1">
+                              {record.observation}
+                            </div>
+
+                          </div>
+
+                        )
+
+                      )
+                    }
 
                     {
                       record.status === "pendiente" && (

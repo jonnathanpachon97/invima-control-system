@@ -81,5 +81,10 @@ class Record(models.Model):
         default="pendiente"
     )
 
+    observation = models.TextField(
+    blank=True,
+    default=""
+    )
+
     def __str__(self):
         return f"{self.template.name} - {self.created_at}"

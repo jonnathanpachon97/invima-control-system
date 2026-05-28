@@ -45,7 +45,8 @@ class RecordSerializer(serializers.ModelSerializer):
             "created_at",
             "data",
             "image",
-            "status"
+            "status",
+            "observation"
         ]
 
         read_only_fields = ["company"]
