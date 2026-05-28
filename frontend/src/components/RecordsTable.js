@@ -170,35 +170,45 @@ const updateStatus = async (
 
     </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto w-full">
 
-        <table className="w-full bg-white rounded-2xl shadow-md">
+        <table
+          className="
+            w-full
+            table-auto
+            bg-white
+            rounded-2xl
+            shadow-md
+            text-xs
+            md:text-sm
+          "
+        >
 
         <thead className="bg-gray-100">
 
           <tr>
 
-            <th className="text-left p-4">
+            <th className="text-left p-2 md:p-4">
               Fecha
             </th>
 
-            <th className="text-left p-4">
+            <th className="text-left p-2 md:p-4">
               ID
             </th>
 
-            <th className="text-left p-4">
+            <th className="text-left p-2 md:p-4">
               Datos
             </th>
 
-            <th className="text-left p-4">
+            <th className="text-left p-2 md:p-4">
               Estado
             </th>
 
-            <th className="text-left p-4">
+            <th className="text-left p-2 md:p-4">
               Evidencia
             </th>
 
-            <th className="text-left p-4">
+            <th className="text-left p-2 md:p-4">
               PDF
             </th>
 
@@ -220,15 +230,39 @@ const updateStatus = async (
                   className="border-t"
                 >
 
-                  <td className="p-4">
+                  <td
+                    className="
+                      p-2
+                      md:p-4
+                      align-top
+                      break-words
+                      max-w-[120px]
+                    "
+                  >
                     {new Date(record.created_at).toLocaleString()}
                   </td>
 
-                  <td className="p-4">
+                  <td
+                    className="
+                      p-2
+                      md:p-4
+                      align-top
+                      break-words
+                      max-w-[120px]
+                    "
+                  >
                     {record.id}
                   </td>
 
-                  <td className="p-4">
+                  <td
+                    className="
+                      p-2
+                      md:p-4
+                      align-top
+                      break-words
+                      max-w-[120px]
+                    "
+                  >
 
                     {
                       Object.entries(record.data).map(
@@ -243,7 +277,15 @@ const updateStatus = async (
 
                   </td>
 
-                  <td className="p-4">
+                  <td
+                    className="
+                      p-2
+                      md:p-4
+                      align-top
+                      break-words
+                      max-w-[120px]
+                    "
+                  >
 
                     <span
                       className={`
@@ -367,7 +409,15 @@ const updateStatus = async (
 
                   </td>
 
-                  <td className="p-4">
+                  <td
+                    className="
+                      p-2
+                      md:p-4
+                      align-top
+                      break-words
+                      max-w-[120px]
+                    "
+                  >
 
                     {
                       record.image ? (
@@ -376,8 +426,10 @@ const updateStatus = async (
                           src={record.image}
                           alt="evidencia"
                           className="
-                            w-24
-                            h-24
+                            w-16
+                            h-16
+                            md:w-24
+                            md:h-24
                             object-cover
                             rounded-xl
                             border
@@ -395,7 +447,15 @@ const updateStatus = async (
 
                   </td>
 
-                  <td className="p-4">
+                  <td
+                    className="
+                      p-2
+                      md:p-4
+                      align-top
+                      break-words
+                      max-w-[120px]
+                    "
+                  >
 
                     <button
                       onClick={() => downloadPDF(record.id)}
@@ -403,16 +463,19 @@ const updateStatus = async (
                         bg-blue-600
                         hover:bg-blue-700
                         text-white
-                        px-4
-                        py-2
+                        px-2
+                        py-1
+                        md:px-4
+                        md:py-2
                         rounded-lg
                         transition
+                        text-xs
                       "
                     >
                       Descargar PDF
                     </button>
 
-                    </td>
+                  </td>
 
                 </tr>
               );
