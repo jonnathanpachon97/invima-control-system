@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer
+} from "recharts";
+
 import api from "../services/api";
 import DynamicForm from "../components/DynamicForm";
 import RecordsTable from "../components/RecordsTable";
@@ -70,6 +78,37 @@ function Dashboard() {
     }
   };
 
+  const statusData = [
+
+  {
+    name: "Aprobados",
+    value: records.filter(
+      (r) => r.status === "aprobado"
+    ).length
+  },
+
+  {
+    name: "Rechazados",
+    value: records.filter(
+      (r) => r.status === "rechazado"
+    ).length
+  },
+
+  {
+    name: "Pendientes",
+    value: records.filter(
+      (r) => r.status === "pendiente"
+    ).length
+  }
+
+];
+
+const COLORS = [
+  "#22c55e",
+  "#ef4444",
+  "#eab308"
+];
+
 return (
 
   <>
@@ -127,6 +166,62 @@ return (
       </div>
 
         <DashboardCharts records={records} />
+
+        <div className="
+          bg-white
+          p-6
+          rounded-2xl
+          shadow-md
+          mt-6
+          mb-8
+        ">
+
+          <h2 className="
+            text-2xl
+            font-bold
+            mb-6
+          ">
+            Estados de Registros
+          </h2>
+
+          <div className="w-full h-80">
+
+            <ResponsiveContainer>
+
+              <PieChart>
+
+                <Pie
+                  data={statusData}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={100}
+                  label
+                >
+
+                  {
+                    statusData.map(
+                      (entry, index) => (
+
+                        <Cell
+                          key={index}
+                          fill={COLORS[index]}
+                        />
+
+                      )
+                    )
+                  }
+
+                </Pie>
+
+                <Tooltip />
+
+              </PieChart>
+
+            </ResponsiveContainer>
+
+          </div>
+
+        </div>
 
         <div className="grid gap-6">
 
