@@ -83,6 +83,28 @@ def generate_record_pdf(record):
     elements.append(created)
     elements.append(Spacer(1, 25))
 
+    # Estado del registro
+    status = Paragraph(
+        f"<b>Estado:</b> {record.status.upper()}",
+        styles["BodyText"]
+    )
+
+    elements.append(status)
+
+    elements.append(Spacer(1, 10))
+
+    # Observación
+    if record.observation:
+
+        observation = Paragraph(
+            f"<b>Observación:</b> {record.observation}",
+            styles["BodyText"]
+        )
+
+        elements.append(observation)
+
+        elements.append(Spacer(1, 20))
+
     # Tabla de datos
     data = [
         ["Campo", "Valor"]
