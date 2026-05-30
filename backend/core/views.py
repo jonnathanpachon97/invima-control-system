@@ -78,6 +78,29 @@ class RecordViewSet(viewsets.ModelViewSet):
         return Record.objects.filter(
             company=company
         )
+    
+    def partial_update(self, request, *args, **kwargs):
+
+        instance = self.get_object()
+
+        status = request.data.get("status")
+
+        if status in ["aprobado", "rechazado"]:
+
+            instance.reviewed_by = request.user
+
+            from django.utils.timezone import now
+
+            instance.reviewed_at = now()
+
+            instance.save()
+
+        return super().partial_update(
+            request,
+            *args,
+            **kwargs
+        )
+
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])

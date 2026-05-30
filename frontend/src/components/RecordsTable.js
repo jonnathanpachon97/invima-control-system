@@ -339,26 +339,43 @@ const updateStatus = async (
 
                       ) : (
 
-                        record.observation && (
+                      record.observation && (
 
-                          <div
-                            className="
-                              mt-2
-                              p-3
-                              bg-gray-100
-                              rounded-lg
-                              text-sm
-                            "
-                          >
-                            <strong>Observación:</strong>
+                        <div
+                          className="
+                            mt-2
+                            p-3
+                            bg-gray-100
+                            rounded-lg
+                            text-sm
+                          "
+                        >
+                          <strong>Observación:</strong>
 
-                            <div className="mt-1">
-                              {record.observation}
-                            </div>
-
+                          <div className="mt-1">
+                            {record.observation}
                           </div>
 
-                        )
+                          {
+                            record.reviewed_by && (
+                              <div className="mt-3 text-xs text-gray-600">
+                                <div>
+                                  <strong>Revisado por:</strong> {record.reviewed_by}
+                                </div>
+
+                                <div>
+                                  <strong>Fecha revisión:</strong>{" "}
+                                  {new Date(
+                                    record.reviewed_at
+                                  ).toLocaleString()}
+                                </div>
+                              </div>
+                            )
+                          }
+
+                        </div>
+
+                      )
 
                       )
                     }

@@ -35,6 +35,11 @@ class RecordSerializer(serializers.ModelSerializer):
         required=False
     )
 
+    reviewed_by = serializers.CharField(
+        source="reviewed_by.username",
+        read_only=True
+    )
+
     class Meta:
         model = Record
 
@@ -46,7 +51,9 @@ class RecordSerializer(serializers.ModelSerializer):
             "data",
             "image",
             "status",
-            "observation"
+            "observation",
+            "reviewed_by",
+            "reviewed_at"
         ]
 
         read_only_fields = ["company"]
