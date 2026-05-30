@@ -35,6 +35,11 @@ class RecordSerializer(serializers.ModelSerializer):
         required=False
     )
 
+    template_name = serializers.CharField(
+        source="template.name",
+        read_only=True
+    )
+
     reviewed_by = serializers.CharField(
         source="reviewed_by.username",
         read_only=True
@@ -47,6 +52,7 @@ class RecordSerializer(serializers.ModelSerializer):
             "id",
             "company",
             "template",
+            "template_name",
             "created_at",
             "data",
             "image",

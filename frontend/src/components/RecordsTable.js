@@ -197,6 +197,10 @@ const updateStatus = async (
             </th>
 
             <th className="text-left p-2 md:p-4">
+              Formato
+            </th>
+
+            <th className="text-left p-2 md:p-4">
               Datos
             </th>
 
@@ -252,6 +256,18 @@ const updateStatus = async (
                     "
                   >
                     {record.id}
+                  </td>
+
+                  <td
+                    className="
+                      p-2
+                      md:p-4
+                      align-top
+                      break-words
+                      max-w-[180px]
+                    "
+                  >
+                    {record.template_name}
                   </td>
 
                   <td
@@ -339,7 +355,7 @@ const updateStatus = async (
 
                       ) : (
 
-                      record.observation && (
+                      (record.observation || record.reviewed_by) && (
 
                         <div
                           className="
@@ -350,17 +366,26 @@ const updateStatus = async (
                             text-sm
                           "
                         >
-                          <strong>Observación:</strong>
 
-                          <div className="mt-1">
-                            {record.observation}
-                          </div>
+                          {
+                            record.observation && (
+                              <>
+                                <strong>Observación:</strong>
+
+                                <div className="mt-1">
+                                  {record.observation}
+                                </div>
+                              </>
+                            )
+                          }
 
                           {
                             record.reviewed_by && (
                               <div className="mt-3 text-xs text-gray-600">
+
                                 <div>
-                                  <strong>Revisado por:</strong> {record.reviewed_by}
+                                  <strong>Revisado por:</strong>{" "}
+                                  {record.reviewed_by}
                                 </div>
 
                                 <div>
@@ -369,6 +394,7 @@ const updateStatus = async (
                                     record.reviewed_at
                                   ).toLocaleString()}
                                 </div>
+
                               </div>
                             )
                           }
