@@ -146,6 +146,25 @@ def download_records_excel(request):
         company=company
     )
 
+    status = request.GET.get("status")
+    start_date = request.GET.get("start_date")
+    end_date = request.GET.get("end_date")
+
+    if status and status != "todos":
+        records = records.filter(
+            status=status
+        )
+
+    if start_date:
+        records = records.filter(
+            created_at__date__gte=start_date
+        )
+
+    if end_date:
+        records = records.filter(
+            created_at__date__lte=end_date
+        )
+
     excel_buffer = generate_records_excel(
         records
     )

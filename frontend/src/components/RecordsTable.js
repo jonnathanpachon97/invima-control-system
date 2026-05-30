@@ -61,6 +61,11 @@ const filteredRecords = records.filter((record) => {
     const response = await api.get(
       "records/export/excel/",
       {
+        params: {
+          status: statusFilter,
+          start_date: startDate,
+          end_date: endDate
+        },
         responseType: "blob"
       }
     );
@@ -75,7 +80,7 @@ const filteredRecords = records.filter((record) => {
 
     link.setAttribute(
       "download",
-      "records.xlsx"
+      `records_${statusFilter}.xlsx`
     );
 
     document.body.appendChild(link);
