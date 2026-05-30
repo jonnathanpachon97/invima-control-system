@@ -83,6 +83,17 @@ class RecordViewSet(viewsets.ModelViewSet):
 
         instance = self.get_object()
 
+        # Bloquear registros ya revisados
+        if instance.status in ["aprobado", "rechazado"]:
+
+            return Response(
+                {
+                    "detail":
+                    "Este registro ya fue revisado y no puede modificarse."
+                },
+                status=400
+            )
+
         status = request.data.get("status")
 
         if status in ["aprobado", "rechazado"]:
