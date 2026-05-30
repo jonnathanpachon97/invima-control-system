@@ -9,6 +9,10 @@ function RecordsTable({ records }) {
   const [observations, setObservations] = useState({});
 
   const [statusFilter, setStatusFilter] = useState("todos");
+  
+  const [startDate, setStartDate] = useState("");
+
+  const [endDate, setEndDate] = useState("");
 
 const filteredRecords = records.filter((record) => {
 
@@ -27,7 +31,27 @@ const filteredRecords = records.filter((record) => {
       ? true
       : record.status === statusFilter;
 
-  return matchesSearch && matchesStatus;
+  const recordDate =
+    new Date(record.created_at);
+
+  const matchesStartDate =
+    startDate
+      ? recordDate >= new Date(startDate)
+      : true;
+
+  const matchesEndDate =
+    endDate
+      ? recordDate <= new Date(
+          endDate + "T23:59:59"
+        )
+      : true;
+
+  return (
+    matchesSearch &&
+    matchesStatus &&
+    matchesStartDate &&
+    matchesEndDate
+  );
 });
 
   const downloadExcel = async () => {
@@ -128,9 +152,19 @@ const updateStatus = async (
 };
 
   return (
-    <div className="mt-10">
+    <div className="mt-6 px-4 md:px-0">
 
-      <div className="flex justify-between items-center mb-4">
+      <div
+        className="
+          flex
+          flex-col
+          md:flex-row
+          justify-between
+          md:items-center
+          gap-4
+          mb-6
+        "
+      >
 
       <h2 className="text-2xl font-bold">
         Registros
@@ -146,6 +180,8 @@ const updateStatus = async (
           py-2
           rounded-xl
           transition
+          w-full
+          md:w-auto
         "
       >
         Exportar Excel
@@ -153,7 +189,21 @@ const updateStatus = async (
 
     </div>
 
-    <div className="mb-4 flex flex-col md:flex-row gap-4">
+    <div
+        className="
+          bg-white
+          rounded-2xl
+          shadow-sm
+          p-4
+          mb-6
+          flex
+          flex-col
+          md:flex-row
+          gap-4
+          items-start
+          md:items-end
+        "
+      >
 
         <input
           type="text"
@@ -183,6 +233,8 @@ const updateStatus = async (
             setStatusFilter(e.target.value)
           }
           className="
+            w-full
+            md:w-auto
             border
             border-gray-300
             rounded-xl
@@ -209,10 +261,108 @@ const updateStatus = async (
 
         </select>
 
+        <div className="flex flex-col">
+          <label className="text-sm text-gray-600 mb-1">
+            Desde
+          </label>
+
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) =>
+              setStartDate(e.target.value)
+            }
+            className="
+              w-full
+              md:w-auto
+              border
+              border-gray-300
+              rounded-xl
+              px-4
+              py-3
+              bg-white
+            "
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <label className="text-sm text-gray-600 mb-1">
+            Hasta
+          </label>
+
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) =>
+              setEndDate(e.target.value)
+            }
+            className="
+              border
+              border-gray-300
+              rounded-xl
+              px-4
+              py-3
+              bg-white
+            "
+          />
+        </div>
+
       </div>
 
       <div className="mb-4 text-sm text-gray-600">
         Mostrando {filteredRecords.length} registros
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+
+        <div className="bg-white shadow rounded-xl p-3">
+          <div className="text-gray-500 text-sm">
+            Total
+          </div>
+          <div className="text-2xl font-bold">
+            {records.length}
+          </div>
+        </div>
+
+        <div className="bg-yellow-50 shadow rounded-xl p-4">
+          <div className="text-yellow-700 text-sm">
+            Pendientes
+          </div>
+          <div className="text-2xl font-bold">
+            {
+              records.filter(
+                r => r.status === "pendiente"
+              ).length
+            }
+          </div>
+        </div>
+
+        <div className="bg-green-50 shadow rounded-xl p-4">
+          <div className="text-green-700 text-sm">
+            Aprobados
+          </div>
+          <div className="text-2xl font-bold">
+            {
+              records.filter(
+                r => r.status === "aprobado"
+              ).length
+            }
+          </div>
+        </div>
+
+        <div className="bg-red-50 shadow rounded-xl p-4">
+          <div className="text-red-700 text-sm">
+            Rechazados
+          </div>
+          <div className="text-2xl font-bold">
+            {
+              records.filter(
+                r => r.status === "rechazado"
+              ).length
+            }
+          </div>
+        </div>
+
       </div>
 
       <div className="overflow-x-auto w-full">
@@ -269,8 +419,6 @@ const updateStatus = async (
 
             {
               filteredRecords.map((record) => {
-
-              console.log(record.image);
 
               return (
 
