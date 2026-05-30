@@ -8,17 +8,26 @@ function RecordsTable({ records }) {
 
   const [observations, setObservations] = useState({});
 
+  const [statusFilter, setStatusFilter] = useState("todos");
+
 const filteredRecords = records.filter((record) => {
 
   const values = `
     ${Object.values(record.data).join(" ")}
-    ${new Date(record.created_at).toLocaleDateString()}
+    ${record.template_name}
     ${record.id}
+    ${record.status}
   `.toLowerCase();
 
-  return values.includes(
-    search.toLowerCase()
-  );
+  const matchesSearch =
+    values.includes(search.toLowerCase());
+
+  const matchesStatus =
+    statusFilter === "todos"
+      ? true
+      : record.status === statusFilter;
+
+  return matchesSearch && matchesStatus;
 });
 
   const downloadExcel = async () => {
@@ -144,31 +153,67 @@ const updateStatus = async (
 
     </div>
 
-      <div className="mb-4">
+    <div className="mb-4 flex flex-col md:flex-row gap-4">
 
-      <input
-        type="text"
-        placeholder="Buscar registros..."
-        value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-        className="
-          w-full
-          md:w-96
-          border
-          border-gray-300
-          rounded-xl
-          px-4
-          py-3
-          focus:outline-none
-          focus:ring-2
-          focus:ring-blue-500
-          bg-white
-        "
-      />
+        <input
+          type="text"
+          placeholder="Buscar registros..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+          className="
+            w-full
+            md:w-96
+            border
+            border-gray-300
+            rounded-xl
+            px-4
+            py-3
+            focus:outline-none
+            focus:ring-2
+            focus:ring-blue-500
+            bg-white
+          "
+        />
 
-    </div>
+        <select
+          value={statusFilter}
+          onChange={(e) =>
+            setStatusFilter(e.target.value)
+          }
+          className="
+            border
+            border-gray-300
+            rounded-xl
+            px-4
+            py-3
+            bg-white
+          "
+        >
+          <option value="todos">
+            Todos
+          </option>
+
+          <option value="aprobado">
+            Aprobados
+          </option>
+
+          <option value="rechazado">
+            Rechazados
+          </option>
+
+          <option value="pendiente">
+            Pendientes
+          </option>
+
+        </select>
+
+      </div>
+
+      <div className="mb-4 text-sm text-gray-600">
+        Mostrando {filteredRecords.length} registros
+      </div>
 
       <div className="overflow-x-auto w-full">
 
