@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import FileResponse
+from django.db.models import Count
 from .pdf_service import generate_record_pdf
 from .excel_service import generate_records_excel
 from rest_framework import viewsets
@@ -174,3 +175,31 @@ def download_records_excel(request):
         as_attachment=True,
         filename="records.xlsx"
     )
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def dashboard_stats(request):
+
+    company = Company.objects.get(
+        user=request.user
+    )
+
+    records = Record.objects.filter(
+        company=company
+    )
+
+    data = {
+        "total": records.count(),
+        "aprobados": records.filter(
+            status="aprobado"
+        ).count(),
+        "rechazados": records.filter(
+            status="rechazado"
+        ).count(),
+        "pendientes": records.filter(
+            status="pendiente"
+        ).count(),
+    }
+
+    return Response(data)
