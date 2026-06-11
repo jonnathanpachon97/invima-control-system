@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import api from "../services/api";
 
-function RecordsTable({ records }) {
+function RecordsTable({ records, currentUser }) {
 
   const [search, setSearch] = useState("");
 
@@ -530,7 +530,10 @@ const updateStatus = async (
                     </span>
 
                     {
-                      record.status === "pendiente" ? (
+                      record.status === "pendiente" &&
+                      ["admin", "supervisor"].includes(
+                        currentUser?.role
+                      ) && (
 
                         <textarea
                           placeholder="Observación..."
@@ -551,8 +554,10 @@ const updateStatus = async (
                           "
                         />
 
-                      ) : (
+                      )
+                    }
 
+                    {
                       (record.observation || record.reviewed_by) && (
 
                         <div
@@ -599,54 +604,55 @@ const updateStatus = async (
 
                         </div>
 
-                      )
-
-                      )
+                      )  
                     }
 
                     {
-                      record.status === "pendiente" && (
+                      record.status === "pendiente" &&
+                      ["admin", "supervisor"].includes(
+                        currentUser?.role
+                      ) && (
 
-                      <div className="flex gap-2 mt-2 flex-wrap">
+                        <div className="flex gap-2 mt-2 flex-wrap">
 
-                        <button
-                          onClick={() =>
-                            updateStatus(record.id, "aprobado")
-                          }
-                          className="
-                            bg-green-600
-                            hover:bg-green-700
-                            text-white
-                            px-2
-                            py-1
-                            rounded-lg
-                            text-xs
-                          "
-                        >
-                          Aprobar
-                        </button>
+                          <button
+                            onClick={() =>
+                              updateStatus(record.id, "aprobado")
+                            }
+                            className="
+                              bg-green-600
+                              hover:bg-green-700
+                              text-white
+                              px-2
+                              py-1
+                              rounded-lg
+                              text-xs
+                            "
+                          >
+                            Aprobar
+                          </button>
 
-                        <button
-                          onClick={() =>
-                            updateStatus(record.id, "rechazado")
-                          }
-                          className="
-                            bg-red-600
-                            hover:bg-red-700
-                            text-white
-                            px-2
-                            py-1
-                            rounded-lg
-                            text-xs
-                          "
-                        >
-                          Rechazar
-                        </button>
+                          <button
+                            onClick={() =>
+                              updateStatus(record.id, "rechazado")
+                            }
+                            className="
+                              bg-red-600
+                              hover:bg-red-700
+                              text-white
+                              px-2
+                              py-1
+                              rounded-lg
+                              text-xs
+                            "
+                          >
+                            Rechazar
+                          </button>
 
-                      </div>
+                        </div>
 
-                    )
-                  }
+                      )
+                    }
 
                   </td>
 

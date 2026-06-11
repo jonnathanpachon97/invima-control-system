@@ -20,11 +20,29 @@ function Dashboard() {
 
   const [templates, setTemplates] = useState([]);
   const [records, setRecords] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     loadTemplates();
     loadRecords();
+    loadCurrentUser();
   }, []);
+
+  const loadCurrentUser = async () => {
+
+    try {
+
+      const response = await api.get("me/");
+
+      setCurrentUser(response.data);
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+  };
 
   const loadTemplates = async () => {
 
@@ -122,6 +140,30 @@ return (
         <h1 className="text-4xl font-bold mb-6 text-gray-800">
           Dashboard INVIMA
         </h1>
+
+        {
+          currentUser && (
+
+            <div
+              className="
+                bg-blue-100
+                text-blue-800
+                px-4
+                py-2
+                rounded-xl
+                mb-6
+                inline-block
+              "
+            >
+              Usuario:
+              <strong> {currentUser.username}</strong>
+              {" | "}
+              Rol:
+              <strong> {currentUser.role}</strong>
+            </div>
+
+          )
+        }
 
         <div className="grid md:grid-cols-2 gap-6 mb-8">
 
@@ -233,39 +275,45 @@ return (
                     className="bg-white rounded-2xl shadow-md p-6"
                   >
 
-                  <div className="flex justify-end gap-3 mb-4">
+                  {
+                    currentUser?.role === "admin" && (
 
-                    <Link
-                      to={`/templates/${template.id}/edit`}
-                      className="
-                        bg-yellow-500
-                        hover:bg-yellow-600
-                        text-white
-                        px-4
-                        py-2
-                        rounded-xl
-                        transition
-                      "
-                    >
-                      Editar
-                    </Link>
+                      <div className="flex justify-end gap-3 mb-4">
 
-                    <button
-                      onClick={() => deleteTemplate(template.id)}
-                      className="
-                        bg-red-500
-                        hover:bg-red-600
-                        text-white
-                        px-4
-                        py-2
-                        rounded-xl
-                        transition
-                      "
-                    >
-                      Desactivar
-                    </button>
+                        <Link
+                          to={`/templates/${template.id}/edit`}
+                          className="
+                            bg-yellow-500
+                            hover:bg-yellow-600
+                            text-white
+                            px-4
+                            py-2
+                            rounded-xl
+                            transition
+                          "
+                        >
+                          Editar
+                        </Link>
 
-                  </div>
+                        <button
+                          onClick={() => deleteTemplate(template.id)}
+                          className="
+                            bg-red-500
+                            hover:bg-red-600
+                            text-white
+                            px-4
+                            py-2
+                            rounded-xl
+                            transition
+                          "
+                        >
+                          Desactivar
+                        </button>
+
+                      </div>
+
+                    )
+                  }
 
                 <DynamicForm
                   template={template}
@@ -278,7 +326,10 @@ return (
 
         </div>
 
-        <RecordsTable records={records} />
+        <RecordsTable 
+          records={records}
+          currentUser={currentUser}
+        />
 
       </div>
 

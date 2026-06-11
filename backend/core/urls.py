@@ -7,7 +7,8 @@ from .views import (
     RecordViewSet,
     download_record_pdf,
     download_records_excel,
-    dashboard_stats
+    dashboard_stats,
+    current_user
 )
 
 router = DefaultRouter()
@@ -41,5 +42,10 @@ urlpatterns = [
     path(
         "dashboard/stats/",
         dashboard_stats
+    ),
+
+    path(
+        "me/",
+        current_user
     ),
 ]

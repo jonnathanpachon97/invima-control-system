@@ -63,6 +63,13 @@ class FormTemplateViewSet(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
 
+        if get_user_role(request.user) != "admin":
+
+            return Response(
+                {"detail": "No tiene permisos."},
+                status=403
+            )
+
         template = self.get_object()
 
         template.is_active = False
@@ -72,6 +79,51 @@ class FormTemplateViewSet(viewsets.ModelViewSet):
         return Response({
             "message": "Formato desactivado"
         })
+    
+    def create(self, request, *args, **kwargs):
+
+        if get_user_role(request.user) != "admin":
+
+            return Response(
+                {"detail": "No tiene permisos."},
+                status=403
+            )
+
+        return super().create(
+            request,
+            *args,
+            **kwargs
+        )
+
+    def update(self, request, *args, **kwargs):
+
+        if get_user_role(request.user) != "admin":
+
+            return Response(
+                {"detail": "No tiene permisos."},
+                status=403
+            )
+
+        return super().update(
+            request,
+            *args,
+            **kwargs
+        )
+    
+    def partial_update(self, request, *args, **kwargs):
+
+        if get_user_role(request.user) != "admin":
+
+            return Response(
+                {"detail": "No tiene permisos."},
+                status=403
+            )
+
+        return super().partial_update(
+            request,
+            *args,
+            **kwargs
+        )
 
 
 class RecordViewSet(viewsets.ModelViewSet):
@@ -247,3 +299,15 @@ def get_user_role(user):
     except UserProfile.DoesNotExist:
 
         return None
+    
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def current_user(request):
+
+    profile = request.user.userprofile
+
+    return Response({
+        "username": request.user.username,
+        "role": profile.role
+    })
