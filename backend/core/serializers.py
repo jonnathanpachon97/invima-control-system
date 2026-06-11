@@ -45,6 +45,11 @@ class RecordSerializer(serializers.ModelSerializer):
         read_only=True
     )
 
+    created_by = serializers.CharField(
+        source="created_by.username",
+        read_only=True
+    )
+
     class Meta:
         model = Record
 
@@ -54,6 +59,7 @@ class RecordSerializer(serializers.ModelSerializer):
             "template",
             "template_name",
             "created_at",
+            "created_by",
             "data",
             "image",
             "status",
@@ -62,7 +68,12 @@ class RecordSerializer(serializers.ModelSerializer):
             "reviewed_at"
         ]
 
-        read_only_fields = ["company"]
+        read_only_fields = [
+            "company",
+            "created_by",
+            "reviewed_by",
+            "reviewed_at"
+        ]
 
     def create(self, validated_data):
 
@@ -73,5 +84,7 @@ class RecordSerializer(serializers.ModelSerializer):
         )
 
         validated_data["company"] = company
+
+        validated_data["created_by"] = request.user
 
         return super().create(validated_data)
