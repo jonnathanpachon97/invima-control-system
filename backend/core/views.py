@@ -7,7 +7,6 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import Company, FormTemplate, Record
 from .serializers import (
     CompanySerializer,
     FormTemplateSerializer,
@@ -18,6 +17,23 @@ from rest_framework.parsers import (
     FormParser,
     JSONParser
 )
+from .models import (
+    Company,
+    FormTemplate,
+    Record,
+    UserProfile
+)
+
+
+def get_company(user):
+
+    try:
+
+        return user.userprofile.company
+
+    except UserProfile.DoesNotExist:
+
+        return None
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
@@ -36,8 +52,8 @@ class FormTemplateViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
-        company = Company.objects.get(
-            user=self.request.user
+        company = get_company(
+            self.request.user
         )
 
         return FormTemplate.objects.filter(
@@ -72,8 +88,8 @@ class RecordViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
-        company = Company.objects.get(
-            user=self.request.user
+        company = get_company(
+            self.request.user
         )
 
         return Record.objects.filter(
@@ -97,6 +113,23 @@ class RecordViewSet(viewsets.ModelViewSet):
 
         status = request.data.get("status")
 
+        role = get_user_role(
+            request.user
+        )
+
+        if (
+            status in ["aprobado", "rechazado"]
+            and role == "operario"
+        ):
+
+            return Response(
+                {
+                    "detail":
+                    "No tiene permisos para aprobar o rechazar registros."
+                },
+                status=403
+            )
+
         if status in ["aprobado", "rechazado"]:
 
             instance.reviewed_by = request.user
@@ -118,8 +151,8 @@ class RecordViewSet(viewsets.ModelViewSet):
 @permission_classes([IsAuthenticated])
 def download_record_pdf(request, pk):
 
-    company = Company.objects.get(
-        user=request.user
+    company = get_company(
+        request.user
     )
 
     record = Record.objects.get(
@@ -139,8 +172,8 @@ def download_record_pdf(request, pk):
 @permission_classes([IsAuthenticated])
 def download_records_excel(request):
 
-    company = Company.objects.get(
-        user=request.user
+    company = get_company(
+        request.user
     )
 
     records = Record.objects.filter(
@@ -181,8 +214,8 @@ def download_records_excel(request):
 @permission_classes([IsAuthenticated])
 def dashboard_stats(request):
 
-    company = Company.objects.get(
-        user=request.user
+    company = get_company(
+        request.user
     )
 
     records = Record.objects.filter(
@@ -203,3 +236,14 @@ def dashboard_stats(request):
     }
 
     return Response(data)
+
+
+def get_user_role(user):
+
+    try:
+
+        return user.userprofile.role
+
+    except UserProfile.DoesNotExist:
+
+        return None

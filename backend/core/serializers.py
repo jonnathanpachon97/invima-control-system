@@ -1,11 +1,35 @@
 from rest_framework import serializers
-from .models import Company, FormTemplate, Record
+from .models import (
+    Company,
+    FormTemplate,
+    Record,
+    UserProfile
+)
 
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
+
+
+class UserProfileSerializer(
+    serializers.ModelSerializer
+):
+
+    username = serializers.CharField(
+        source="user.username",
+        read_only=True
+    )
+
+    class Meta:
+        model = UserProfile
+
+        fields = [
+            "id",
+            "username",
+            "role"
+        ]
 
 
 class FormTemplateSerializer(serializers.ModelSerializer):
@@ -19,9 +43,7 @@ class FormTemplateSerializer(serializers.ModelSerializer):
 
         request = self.context["request"]
 
-        company = Company.objects.get(
-            user=request.user
-        )
+        company = request.user.userprofile.company
 
         validated_data["company"] = company
 
@@ -79,9 +101,7 @@ class RecordSerializer(serializers.ModelSerializer):
 
         request = self.context["request"]
 
-        company = Company.objects.get(
-            user=request.user
-        )
+        company = request.user.userprofile.company
 
         validated_data["company"] = company
 
